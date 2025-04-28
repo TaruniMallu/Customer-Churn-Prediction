@@ -13,8 +13,12 @@ import matplotlib.pyplot as plt
 # Streamlit title
 st.title('Customer Churn Prediction')
 
-# Load and preprocess the dataset
+# Load the dataset
 df = pd.read_csv('Churn_Modelling.csv')
+
+# Display a small preview of the data (First 5 rows)
+st.subheader('Dataset Preview:')
+st.write(df.head())
 
 # Check for missing values and handle them
 num_imputer = SimpleImputer(strategy='median')
@@ -63,14 +67,15 @@ importances = rf.feature_importances_
 feature_names = X.columns
 feat_imp = pd.Series(importances, index=feature_names).sort_values(ascending=False)
 
-st.subheader("Feature Importance:")
-feat_imp.plot(kind='bar')
-plt.title('Feature Importance')
-st.pyplot()
+fig, ax = plt.subplots()
+feat_imp.plot(kind='bar', ax=ax)
+ax.set_title('Feature Importance')
+st.pyplot(fig)
 
 # Display churn distribution
-st.subheader("Customer Churn Distribution:")
-sns.countplot(x='Exited', data=df)
-plt.xticks([0, 1], ['Stayed', 'Churned'])
-plt.title('Customer Churn Distribution')
-st.pyplot()
+fig, ax = plt.subplots()
+sns.countplot(x='Exited', data=df, ax=ax)
+ax.set_xticks([0, 1])
+ax.set_xticklabels(['Stayed', 'Churned'])
+ax.set_title('Customer Churn Distribution')
+st.pyplot(fig)
