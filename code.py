@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -14,12 +13,8 @@ import matplotlib.pyplot as plt
 # Streamlit title
 st.title('Customer Churn Prediction')
 
-# Load dataset
+# Load and preprocess the dataset
 df = pd.read_csv('Churn_Modelling.csv')
-
-# Display Data Preview and Info
-st.write("Data Preview:", df.head())
-st.write("Data Info:", df.info())
 
 # Check for missing values and handle them
 num_imputer = SimpleImputer(strategy='median')
@@ -39,13 +34,6 @@ for col in df.select_dtypes(include=['object']).columns:
     df[col] = le.fit_transform(df[col])
     label_encoders[col] = le
 
-# Display churn distribution
-st.write("Customer Churn Distribution:")
-sns.countplot(x='Exited', data=df)
-plt.xticks([0, 1], ['Stayed', 'Churned'])
-plt.title('Customer Churn Distribution')
-st.pyplot()
-
 # Define features and target
 X = df.drop('Exited', axis=1)
 y = df['Exited']
@@ -64,10 +52,10 @@ rf.fit(X_train, y_train)
 y_pred_rf = rf.predict(X_test)
 
 # Display classification report
-st.write("Logistic Regression Classification Report:")
+st.subheader("Logistic Regression Classification Report:")
 st.text(classification_report(y_test, y_pred_lr))
 
-st.write("Random Forest Classification Report:")
+st.subheader("Random Forest Classification Report:")
 st.text(classification_report(y_test, y_pred_rf))
 
 # Feature importance visualization
@@ -75,7 +63,14 @@ importances = rf.feature_importances_
 feature_names = X.columns
 feat_imp = pd.Series(importances, index=feature_names).sort_values(ascending=False)
 
-st.write("Feature Importance:")
+st.subheader("Feature Importance:")
 feat_imp.plot(kind='bar')
 plt.title('Feature Importance')
+st.pyplot()
+
+# Display churn distribution
+st.subheader("Customer Churn Distribution:")
+sns.countplot(x='Exited', data=df)
+plt.xticks([0, 1], ['Stayed', 'Churned'])
+plt.title('Customer Churn Distribution')
 st.pyplot()
