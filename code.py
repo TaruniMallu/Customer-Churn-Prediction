@@ -44,19 +44,19 @@ import matplotlib.pyplot as plt
 # In[7]:
 
 
-df = pd.read_csv('/Users/taruni/Desktop/growthlink/Churn_Modelling.csv')
+df = pd.read_csv('Churn_Modelling.csv')
 
 
 # In[9]:
 
 
-print(df.head())
+st.write(df.head())  # to show the top rows of the dataframe
+st.write(df.info())  # to display information about the dataframe
+
 
 
 # In[10]:
 
-
-print(df.info())
 
 
 # In[11]:
